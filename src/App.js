@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    input:{
+    input: {
         marginTop: theme.spacing(8),
     },
     permawebifying: {
@@ -73,6 +73,19 @@ function forEach(txs) {
 
 }
 
+function getFetchStatus(fetchError) {
+    if (fetchError !== undefined) {
+        return <div>
+            <Typography variant="body2" color="textSecondary" align="center">
+                Permawebifying Service Access Failure
+            </Typography>
+            <Typography variant="body2" color="textSecondary" align="center">
+                {fetchError}
+            </Typography>
+        </div>
+    }
+}
+
 function getResult(result) {
     if (result !== undefined && result != null) {
         console.log("result:" + result)
@@ -87,7 +100,7 @@ function getResult(result) {
         if (result.error !== undefined) {
             return <div>
                 <Typography variant="body2" color="textSecondary" align="center">
-                    Fetching IPFS File Failure
+                    Fetching IPFS File Failure, double check provided hash
                 </Typography>
                 <Typography variant="body2" color="textSecondary" align="center">
                     {result.error}
@@ -109,12 +122,14 @@ function getResult(result) {
 function App() {
     const classes = useStyles();
     const [result, setResult] = useState()
+    const [fetchError, setFetchError] = useState()
     const [hash, setHash] = useState('')
     const [open, setOpen] = React.useState(false);
 
     function handleChange(e) {
         setHash(e.target.value)
         setResult({})
+        setFetchError(undefined)
     }
 
     const handleClose = () => {
@@ -122,15 +137,24 @@ function App() {
     };
 
     async function permawebifying() {
+        setFetchError(undefined)
         console.log("Send Post Request to service host")
         if (hash === '') {
             setOpen(true)
             return
         }
-        const rawResponse = await fetch(service_url, {
-            method: 'POST',
-            body: hash
-        });
+        let rawResponse
+        try {
+            rawResponse = await fetch(service_url, {
+                method: 'POST',
+                body: hash
+            }).catch(e => { throw (e) })
+        } catch (e) {
+            console.log(e.toString())
+            setFetchError(e.toString())
+            return
+        }
+
         const result = await rawResponse.json()
         setResult(result)
     }
@@ -162,10 +186,14 @@ function App() {
                     className={classes.permawebifying}
                 >
                     Permawebifying IPFS File
-                  </Button>
+                </Button>
+                {
+                    getFetchStatus(fetchError)
+                }
                 {
                     getResult(result)
                 }
+
 
                 <Dialog
                     open={open}
