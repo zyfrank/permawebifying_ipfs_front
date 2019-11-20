@@ -8383,6 +8383,13 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is
   resolved "http://r.cnpmjs.org/react-is/download/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha1-LMD+D7p0LZf9UnxCoTvsTusGJBw=
 
+react-md-spinner@^1.0.0:
+  version "1.0.0"
+  resolved "http://r.cnpmjs.org/react-md-spinner/download/react-md-spinner-1.0.0.tgz#14159e21b167af64bc9fb70c2558b5d9a5003820"
+  integrity sha1-FBWeIbFnr2S8n7cMJVi12aUAOCA=
+  dependencies:
+    stylis "^3.5.4"
+
 react-scripts@3.2.0:
   version "3.2.0"
   resolved "http://r.cnpmjs.org/react-scripts/download/react-scripts-3.2.0.tgz#58ccd6b4ffa27f1b4d2986cbdcaa916660e9e33c"
@@ -9570,7 +9577,7 @@ stylis-rule-sheet@^0.0.10:
   resolved "http://r.cnpmjs.org/stylis-rule-sheet/download/stylis-rule-sheet-0.0.10.tgz#44e64a2b076643f4b52e5ff71efc04d8c3c4a430"
   integrity sha1-ROZKKwdmQ/S1Ll/3HvwE2MPEpDA=
 
-stylis@^3.5.0:
+stylis@^3.5.0, stylis@^3.5.4:
   version "3.5.4"
   resolved "http://r.cnpmjs.org/stylis/download/stylis-3.5.4.tgz#f665f25f5e299cf3d64654ab949a57c768b73fbe"
   integrity sha1-9mXyX14pnPPWRlSrlJpXx2i3P74=

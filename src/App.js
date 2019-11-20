@@ -15,6 +15,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import MDSpinner from "react-md-spinner";
 
 import './App.css';
 
@@ -76,10 +77,10 @@ function forEach(txs) {
 function getFetchStatus(fetchError) {
     if (fetchError !== undefined) {
         return <div>
-            <Typography variant="body2" color="textSecondary" align="center">
+            <Typography variant="body2" color="secondary" align="center">
                 Permawebifying Service Access Failure
             </Typography>
-            <Typography variant="body2" color="textSecondary" align="center">
+            <Typography variant="body2" color="secondary" align="center">
                 {fetchError}
             </Typography>
         </div>
@@ -99,10 +100,10 @@ function getResult(result) {
         }
         if (result.error !== undefined) {
             return <div>
-                <Typography variant="body2" color="textSecondary" align="center">
+                <Typography variant="body2" color="secondary" align="center">
                     Fetching IPFS File Failure, double check provided hash
                 </Typography>
-                <Typography variant="body2" color="textSecondary" align="center">
+                <Typography variant="body2" color="secondary" align="center">
                     {result.error}
                 </Typography>
             </div>
@@ -125,6 +126,7 @@ function App() {
     const [fetchError, setFetchError] = useState()
     const [hash, setHash] = useState('')
     const [open, setOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     function handleChange(e) {
         setHash(e.target.value)
@@ -137,7 +139,9 @@ function App() {
     };
 
     async function permawebifying() {
+        setIsLoading(true)
         setFetchError(undefined)
+        setResult({})
         console.log("Send Post Request to service host")
         if (hash === '') {
             setOpen(true)
@@ -153,6 +157,8 @@ function App() {
             console.log(e.toString())
             setFetchError(e.toString())
             return
+        }finally{
+            setIsLoading(false)
         }
 
         const result = await rawResponse.json()
@@ -181,11 +187,12 @@ function App() {
                 <Button
                     fullWidth
                     variant="contained"
+                    disabled = {isLoading}
                     color="primary"
                     onClick={permawebifying}
                     className={classes.permawebifying}
                 >
-                    Permawebifying IPFS File
+                    {isLoading ?<MDSpinner/> : "Permawebifying IPFS File"}
                 </Button>
                 {
                     getFetchStatus(fetchError)
